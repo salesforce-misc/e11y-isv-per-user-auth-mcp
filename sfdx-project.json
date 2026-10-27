@@ -1,0 +1,32 @@
+{
+  "packageDirectories": [
+    {
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT",
+      "path": "force-app",
+      "default": true,
+      "package": "GitHubReadOnlyMCP",
+      "versionDescription": "",
+      "postInstallScript": "GitHubMcpPostInstall"
+    }
+  ],
+  "name": "20261014_githubMcpPerUser",
+  "namespace": "mvpbo3",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "68.0",
+  "packageAliases": {
+    "GitHubReadOnlyMCP": "0HoHs000000L2E1KAK",
+    "GitHubReadOnlyMCP@0.1.0-1": "04tHs000000iTCuIAM",
+    "GitHubReadOnlyMCP@0.1.0-2": "04tHs000000iTCzIAM",
+    "GitHubReadOnlyMCP@0.1.0-3": "04tHs000000iTD4IAM",
+    "GitHubReadOnlyMCP@0.1.0-4": "04tHs000000iTD9IAM",
+    "GitHubReadOnlyMCP@0.1.0-5": "04tHs000000iTDEIA2",
+    "GitHubReadOnlyMCP@0.1.0-6": "04tHs000000iTDJIA2",
+    "GitHubReadOnlyMCP@0.1.0-7": "04tHs000000iTDOIA2",
+    "GitHubReadOnlyMCP@0.1.0-8": "04tHs000000iTDTIA2",
+    "GitHubReadOnlyMCP@0.1.0-9": "04tHs000000iTDYIA2",
+    "GitHubReadOnlyMCP@0.1.0-10": "04tHs000000iTDdIAM",
+    "GitHubReadOnlyMCP@0.1.0-11": "04tHs000000iTDiIAM",
+    "GitHubReadOnlyMCP@0.1.0-12": "04tHs000000iTDnIAM"
+  }
+}

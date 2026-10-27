@@ -1,0 +1,19 @@
+{
+  "orgName": "mvogelgesang company",
+  "edition": "Developer",
+  "features": ["EnableSetPasswordInApi", "Chatbot", "Einstein1AIPlatform"],
+  "settings": {
+    "lightningExperienceSettings": {
+      "enableS1DesktopEnabled": true
+    },
+    "mobileSettings": {
+      "enableS1EncryptedStoragePref2": false
+    },
+    "botSettings": {
+      "enableBots": true
+    },
+    "EinsteinGptSettings": {
+      "enableEinsteinGptPlatform": "true"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Post-install setup for the GitHub MCP server.</description>
+    <flexiPage>GitHub_MCP_Setup</flexiPage>
+    <label>GitHub MCP Setup</label>
+    <motif>Custom19: Wrench</motif>
+</CustomTab>

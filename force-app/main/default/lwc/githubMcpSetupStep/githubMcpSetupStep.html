@@ -1,0 +1,30 @@
+<template>
+  <lightning-card>
+    <div slot="title" class="slds-media slds-media_center">
+      <div class="slds-media__figure">
+        <template lwc:if={isComplete}>
+          <lightning-icon
+            icon-name="utility:success"
+            variant="success"
+            size="small"
+            alternative-text="Done"
+          ></lightning-icon>
+        </template>
+        <template lwc:else>
+          <span class={markerClass} aria-hidden="true">{number}</span>
+        </template>
+      </div>
+      <div class="slds-media__body">
+        <span class="slds-assistive-text">Step {number}: </span>{label}
+      </div>
+    </div>
+    <lightning-badge
+      slot="actions"
+      class={badgeClass}
+      label={badgeLabel}
+    ></lightning-badge>
+    <div class="slds-p-horizontal_medium">
+      <slot></slot>
+    </div>
+  </lightning-card>
+</template>

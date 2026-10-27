@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>GitHubMcpSetupController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>GitHub_MCP_Setup_Admin</name>
+    </customPermissions>
+    <description
+  >Access to the GitHub MCP Setup page. Assigned to the installing admin by the post-install script.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>GitHub MCP - Setup Admin</label>
+    <tabSettings>
+        <tab>GitHub_MCP_Setup</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+</PermissionSet>

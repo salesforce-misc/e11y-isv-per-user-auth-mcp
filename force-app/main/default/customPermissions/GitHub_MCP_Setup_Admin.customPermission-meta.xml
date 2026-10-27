@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description
+  >Lets an admin use the GitHub MCP Setup page to save the GitHub OAuth App credentials and connect their own GitHub account.</description>
+    <isLicensed>false</isLicensed>
+    <label>GitHub MCP Setup Admin</label>
+</CustomPermission>

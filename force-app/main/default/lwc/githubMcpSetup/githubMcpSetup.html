@@ -1,0 +1,240 @@
+<template>
+  <lightning-card
+    title="GitHub MCP Setup"
+    icon-name="standard:custom_notification"
+  >
+    <lightning-button-icon
+      slot="actions"
+      icon-name="utility:refresh"
+      alternative-text="Refresh status"
+      title="Refresh status"
+      onclick={handleRefresh}
+      disabled={isLoading}
+    ></lightning-button-icon>
+    <div class="slds-p-horizontal_medium slds-is-relative">
+      <p>
+        Connect this org to GitHub's MCP server. Each user signs in to GitHub
+        with their own account, so agents act with that user's GitHub access.
+      </p>
+      <template lwc:if={status}>
+        <p class="slds-m-top_small slds-text-title_bold progress-summary">
+          {progressSummary}
+        </p>
+      </template>
+      <template lwc:if={isLoading}>
+        <lightning-spinner
+          alternative-text="Loading"
+          size="small"
+        ></lightning-spinner>
+      </template>
+    </div>
+  </lightning-card>
+
+  <template lwc:if={error}>
+    <div class="slds-m-top_small">
+      <lightning-card
+        title="Couldn't load setup status"
+        icon-name="utility:error"
+      >
+        <p class="slds-p-horizontal_medium error-message">{error}</p>
+      </lightning-card>
+    </div>
+  </template>
+
+  <template lwc:if={status}>
+    <c-github-mcp-setup-step
+      class="slds-m-top_small slds-show"
+      data-step="permissions"
+      number="1"
+      label={labels.permissions}
+      state={permissionsState}
+    >
+      <template for:each={permissionChecks} for:item="check">
+        <div
+          key={check.key}
+          class="slds-media slds-media_center slds-m-bottom_x-small"
+        >
+          <div class="slds-media__figure">
+            <lightning-icon
+              icon-name={check.iconName}
+              variant={check.iconVariant}
+              size="x-small"
+              alternative-text={check.iconText}
+            ></lightning-icon>
+          </div>
+          <div class="slds-media__body">{check.label}</div>
+        </div>
+      </template>
+      <template lwc:if={needsPermissions}>
+        <p class="permission-help">
+          Assign the <strong>GitHub - Permission Set</strong> to yourself, then
+          refresh this page.&nbsp;
+          <template lwc:if={permissionSetUrl}>
+            <a href={permissionSetUrl} target="_blank" rel="noopener noreferrer"
+              >Open the permission set</a
+            >
+          </template>
+        </p>
+      </template>
+    </c-github-mcp-setup-step>
+
+    <c-github-mcp-setup-step
+      class="slds-m-top_small slds-show"
+      data-step="oauthApp"
+      number="2"
+      label={labels.oauthApp}
+      state={oauthAppState}
+    >
+      <template lwc:if={showOauthInstructions}>
+        <ol class="slds-list_ordered slds-m-bottom_small oauth-instructions">
+          <li>
+            In GitHub, open&nbsp;
+            <a href={githubNewAppUrl} target="_blank" rel="noopener noreferrer"
+              >Register a new OAuth app</a
+            >. To create it under an organization instead, use that
+            organization's Settings &gt; Developer settings &gt; OAuth Apps.
+          </li>
+          <li>
+            Enter an application name and a homepage URL, such as your company's
+            site.
+          </li>
+          <li>
+            Paste the callback URL below into&nbsp;
+            <strong>Authorization callback URL</strong>.
+          </li>
+          <li>Register the app, then generate a client secret.</li>
+        </ol>
+      </template>
+      <div class="slds-grid slds-grid_vertical-align-end">
+        <div class="slds-col slds-grow">
+          <lightning-input
+            class="callback-url"
+            label="Authorization callback URL"
+            value={status.callbackUrl}
+            readonly
+          ></lightning-input>
+        </div>
+        <div class="slds-col slds-grow-none slds-p-left_x-small">
+          <lightning-button
+            label="Copy"
+            icon-name="utility:copy"
+            onclick={handleCopyCallback}
+          ></lightning-button>
+        </div>
+      </div>
+      <template lwc:if={hasCredentials}>
+        <lightning-button
+          class="oauth-instructions-toggle"
+          variant="base"
+          label={oauthInstructionsToggleLabel}
+          onclick={handleToggleOauthInstructions}
+        ></lightning-button>
+      </template>
+    </c-github-mcp-setup-step>
+
+    <c-github-mcp-setup-step
+      class="slds-m-top_small slds-show"
+      data-step="credentials"
+      number="3"
+      label={labels.credentials}
+      state={credentialsState}
+    >
+      <template lwc:if={showCredentialsForm}>
+        <lightning-input
+          class="client-id"
+          label="Client ID"
+          value={clientId}
+          onchange={handleClientIdChange}
+          required
+        ></lightning-input>
+        <lightning-input
+          class="client-secret"
+          type="password"
+          label="Client secret"
+          value={clientSecret}
+          onchange={handleClientSecretChange}
+          autocomplete="off"
+          required
+        ></lightning-input>
+        <div class="slds-m-top_small">
+          <lightning-button
+            class="save-button"
+            variant="brand"
+            label={saveLabel}
+            onclick={handleSave}
+            disabled={saveDisabled}
+          ></lightning-button>
+          <template lwc:if={isReplacingCredentials}>
+            <lightning-button
+              class="cancel-replace-button slds-m-left_x-small"
+              label="Cancel"
+              onclick={handleCancelReplace}
+            ></lightning-button>
+          </template>
+        </div>
+      </template>
+      <template lwc:else>
+        <p class="slds-m-bottom_small credentials-summary">
+          {credentialsSummary}
+        </p>
+        <lightning-button
+          class="replace-button"
+          label="Replace credentials"
+          onclick={handleStartReplace}
+        ></lightning-button>
+      </template>
+    </c-github-mcp-setup-step>
+
+    <c-github-mcp-setup-step
+      class="slds-m-top_small slds-show"
+      data-step="authenticate"
+      number="4"
+      label={labels.authenticate}
+      state={authenticateState}
+    >
+      <p class="slds-m-bottom_small connect-help">{connectHelp}</p>
+      <lightning-button
+        class="connect-button"
+        variant={connectVariant}
+        label={connectLabel}
+        onclick={handleConnect}
+        disabled={connectDisabled}
+      ></lightning-button>
+      <template lwc:if={isConnected}>
+        <lightning-button
+          class="disconnect-button slds-m-left_x-small"
+          label="Disconnect"
+          onclick={handleDisconnect}
+        ></lightning-button>
+      </template>
+    </c-github-mcp-setup-step>
+
+    <c-github-mcp-setup-step
+      class="slds-m-top_small slds-show"
+      data-step="next"
+      number="5"
+      label={labels.next}
+      state={nextStepsState}
+    >
+      <ol class="slds-list_ordered">
+        <li>
+          Open&nbsp;
+          <a
+            class="registry-link"
+            href={registryUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            >Agentforce Registry</a
+          >, select the <strong>GitHub</strong> MCP server, and refresh its
+          tools.
+        </li>
+        <li>
+          Assign the <strong>GitHub - Permission Set</strong> to each user who
+          will use the agent. Each of them connects their own GitHub account the
+          first time.
+        </li>
+        <li>Add the GitHub tools to an Employee agent.</li>
+      </ol>
+    </c-github-mcp-setup-step>
+  </template>
+</template>
