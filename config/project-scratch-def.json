@@ -12,6 +12,9 @@
     "botSettings": {
       "enableBots": true
     },
+    "agentPlatformSettings": {
+      "enableAgentPlatform": true
+    },
     "EinsteinGptSettings": {
       "enableEinsteinGptPlatform": "true"
     }
